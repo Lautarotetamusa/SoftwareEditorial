@@ -24,6 +24,7 @@ for (const tipo in transacciones){
         router.post(`/${tipo}`, auth, TransaccionController.transaccion(transacciones[tipo as TipoTransaccion]));
     }
 };
+router.get('/consignacion/:id/comprobante', auth, TransaccionController.generateComprobante(Consignacion));
 
 router.post(`/venta`, auth, VentaController.vender(VentaFirme));
 router.post(`/ventaConsignacion`, auth, VentaController.ventaConsignado);

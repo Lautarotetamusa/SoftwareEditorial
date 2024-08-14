@@ -1,14 +1,17 @@
-import {conn} from '../db'
-import { NotFound, ValidationError } from './errors';
-import { MedioPago, SaveVenta, VentaSchema, createVenta, createVentaConsignado } from '../schemas/venta.schema';
 import { RowDataPacket, PoolConnection } from 'mysql2/promise';
-import { LibroTransaccion, Transaccion } from './transaccion.model';
-import { SaveTransaccion, TransaccionSchema, tipoTransaccion } from '../schemas/transaccion.schema';
+
+import { NotFound, ValidationError } from './errors';
+import {conn} from '../db'
+
 import { filesUrl } from '../app';
+import { LibroTransaccion, Transaccion } from './transaccion.model';
 import { Cliente } from './cliente.model';
-import { LibroCantidad } from '../schemas/libros.schema';
 import { Libro } from './libro.model';
 import { User } from './user.model';
+
+import { SaveTransaccion, TransaccionSchema, tipoTransaccion } from '../schemas/transaccion.schema';
+import { MedioPago, SaveVenta, VentaSchema, createVenta, createVentaConsignado } from '../schemas/venta.schema';
+import { LibroCantidad } from '../schemas/libros.schema';
 import { TipoCliente, tipoCliente } from '../schemas/cliente.schema';
 
 export class Venta extends Transaccion{

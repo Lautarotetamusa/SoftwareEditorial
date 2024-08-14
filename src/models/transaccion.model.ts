@@ -109,6 +109,13 @@ export abstract class Transaccion extends BaseModel {
         return transaccion;
     }
 
+    static async getWithOutParsing(id: number){
+        const transaccion = await this.find_one<TransaccionSchema, Transaccion>({
+            id: id
+        });
+        return transaccion;
+    }
+
     /* 
         * Obtener los libros que se van a usar en la transaccion, con su precio y su stock
     */

@@ -28,6 +28,34 @@ const getAll = (transaccion: typeof Transaccion) => {
     }
 }   
 
+const generateComprobante = (transaccion: typeof Transaccion) => {
+    return async (req: Request, res: Response): Promise<Response> => {
+        const id = Number(req.params.id);
+        if (!id) throw new ValidationError("El id debe ser un numero");
+
+        const user = await User.getById(res.locals.user.id);
+        const t = await transaccion.getWithOutParsing(id);
+        const cliente = await Cliente.getById(t.id_cliente, user.id);
+        const libros = await t.getLibros();
+        emitirComprobante({
+            data: {
+                consignacion: Object.assign({}, t),
+                cliente: cliente,
+                libros: libros
+            }, 
+            user: user, 
+        });
+
+        t.parsePath(transaccion.filesFolder);
+
+        return res.status(201).json({
+            success: true,
+            message: "Comprobante generado correctamente",
+            data: t,
+        });
+    }
+}   
+
 export const transaccion = (transaccion: typeof Transaccion) => {
     return async(req: Request, res: Response): Promise<Response> => {
         const connection = await conn.getConnection();
@@ -86,5 +114,6 @@ export const transaccion = (transaccion: typeof Transaccion) => {
 export default{
     getOne,
     getAll,
-    transaccion
+    transaccion,
+    generateComprobante,
 }
